@@ -81,7 +81,7 @@ def main():
     
 
         ##### SIDEBAR #########
-        # side_bar(selected_address)
+        side_bar(selected_address)
 
 if __name__=='__main__':
     main()

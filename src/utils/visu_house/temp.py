@@ -1,6 +1,6 @@
-from plot_house import plot_house
-from house import House
-from tiff_manipulation import substract_dtm_dsm, mask_chm
+# from plot_house import plot_house
+# from house import House
+# from tiff_manipulation import substract_dtm_dsm, mask_chm
 import pandas as pd
 from rich.traceback import install
 install()
@@ -30,19 +30,19 @@ import rasterio
 # fig.show()
 # st.plotly_chart(fig, use_container_width=True)
 
-# dtm = f"/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DTM/merged.tif"
-# src = rasterio.open(dtm)
+dtm = f"/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DTM/merged.tif"
+src = rasterio.open(dtm)
+print(src.bounds)
 # show(dtm)
 
 
-
 # ## GET TIFFS
-df_addresss = pd.read_csv("../../address.csv")
-list_address = df_addresss["address"].to_list()
+# df_addresss = pd.read_csv("../../address.csv")
+# list_address = df_addresss["address"].to_list()
 
 
-liste_jerem = []
-for address in list_address:
-    house = House(address)
-    liste_jerem.append(house.tif_names)
-print(liste_jerem)
+# liste_jerem = []
+# for address in list_address:
+#     house = House(address)
+#     liste_jerem.append(house.tif_names)
+# print(liste_jerem)
