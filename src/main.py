@@ -48,16 +48,16 @@ def main():
             print(house.tif_names)
             # dtm = f"/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DTM/{house.tif_names}"
             # dsm = f"/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DSM/{house.tif_names}"
-            dtm = "/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DTM/156000-238000.tif"
-            dsm = "/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DSM/156000-238000.tif"
+            dtm = "/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DTM/155000-240000.tif"
+            dsm = "/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DSM/155000-240000.tif"
             substract_dtm_dsm(dtm, dsm)
             shapes = [feature for feature in house.bounding_box_coordinates]
             mask_chm(shapes)
-            # chm = "masked_chm.tif"
-            # fig = plot_house(chm, house.house_coordinates)
+            chm = "masked_chm.tif"
+            fig = plot_house(chm, house.house_coordinates)
 
-            # config={"displayModeBar": True}
-            # st.plotly_chart(fig, use_container_width=False, config=config)
+            config={"displayModeBar": True}
+            st.plotly_chart(fig, use_container_width=False, config=config)
         
         #Just because we don't have all the necessary tiffs
         except Exception as r:
