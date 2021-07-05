@@ -62,17 +62,22 @@ def side_bar(address):
 
         st.header('Outdoor informations:')
         
-        # #Terrace Area
-        # terrace_area = df_address["property_terraceSurface"].values[0]
-        # terrace_area_display = terrace_area if terrace_area > 0 else "No terrace"
-        # st.markdown('__Terrace area:__')
-        # if terrace_area_display == "No Terrace":
-        #     st.info(f'{terrace_area_display}')
-        # else:
-        #     st.info(f'{terrace_area_display} m2')
+        #Terrace Area
+        if isinstance(df_address["property_terraceSurface"].values[0], int):
+            terrace_area = df_address["property_terraceSurface"].values[0]
+        else:
+            terrace_area = 0
+
+        terrace_area_display = terrace_area if terrace_area > 0 else "No terrace"
+        st.markdown('__Terrace area:__')
+        if terrace_area_display == "No terrace":
+            st.info(f'{terrace_area_display}')
+        else:
+            st.info(f'{terrace_area_display} m2')
 
         #Garden Area
-        garden_area = st.number_input("Enter the area of your garden", min_value= 0, max_value = 100000000)
+        # garden_area = st.number_input("Enter the area of your garden", min_value= 0, max_value = 100000000) #not in dataset
+
         # number_of_facades = st.selectbox('What is the number of facades?', [2, 3, 4])
         # swimming_pool = st.selectbox('Do you have a swimming pool?', ["No","Yes"])
         # surface_of_the_land = area + terrace_area + garden_area

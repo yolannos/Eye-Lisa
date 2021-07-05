@@ -1,6 +1,8 @@
 import numpy as np
 from pyproj import Transformer, CRS
 from mapbox import Geocoder
+from utils.visu_house.tiff_manipulation import merge_tif
+# from tiff_manipulation import merge_tif
 
 class House():
 
@@ -9,7 +11,7 @@ class House():
         self.address = address
 
         self.request_data()
-        self.get_tiff_names()
+        self.get_tif_names()
 
     def bounding_box(self):
 
@@ -18,19 +20,26 @@ class House():
         
         return l, b, r, t
 
-    def get_tiff_names(self):
+    def get_tif_names(self):
         l, b, r, t =  self.bounding_box()
-        self.tiff_names = []
+        self.tif_names = []
         x_coordinates = [l,r]
         y_coordinates = [t,b]
 
         for x in x_coordinates:
             for y in y_coordinates:
                 
-                if str(int((y)//1000*1000)) + "-" + str(int((x+1000)//1000*1000)) + ".tif" in self.tiff_names:
+                if  str(int((x)//1000*1000)) + "-" + str(int((y+1000)//1000*1000)) + ".tif" in self.tif_names:
                     pass
                 else:
-                    self.tiff_names.append(str(int((y)//1000*1000)) + "-" + str(int((x+1000)//1000*1000)) + ".tif")
+                    self.tif_names.append(str(int((x)//1000*1000)) + "-" + str(int((y+1000)//1000*1000)) + ".tif")
+    
+        if len(self.tif_names) > 1:
+            merge_name = merge_tif(self.tif_names)
+            self.tif_names = merge_name
+        else:
+            self.tif_names = self.tif_names[0]
+        
 
     def request_data(self):
         geocoder = Geocoder(access_token="pk.eyJ1IjoieW9sYW5ub3MiLCJhIjoiY2txZ3pncmU1MDcybzJ2bnh2Y3ExOXdhYiJ9.LiIcIeNaGqeRZ4W_IUcl-g")
