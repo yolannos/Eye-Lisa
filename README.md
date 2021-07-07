@@ -29,8 +29,11 @@ Then for a specific address, we have Lambert72 coordinates and we do a euclidian
 ## Fetching the address:
  <img src="./assets/define_area.png" alt="drawing" width="600"/>
 
- ## Fetching the tif:
+## Fetching the tif:
  <img src="./assets/fetch_tif.png" alt="drawing" width="600"/>
+
+## Masking the tif:
+We take the tiff crop it to have the size of the desired span (150 meters from the center to the four coodinates)
 
  ## Plotting it:
 Use of Plotly and add the trace of the building.
