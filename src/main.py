@@ -25,11 +25,12 @@ from visu_house.tiff_manipulation import substract_dtm_dsm, mask_chm
 # X = data.drop(["Price","Unnamed: 0","PriceperMeter"] , axis = 1)
 # columns = X.columns
 # #######
+
 def main():
 
     st.title("Eye Lisa - Demo")
     html_temp = """
-    <h2 style="color:black;text-align:left;"> Your favorite App to estimate the price of your good </h2>
+    <h2 style="color:black;text-align:left;"> Take a look at your house!</h2>
     """
     st.markdown(html_temp,unsafe_allow_html=True)
 
@@ -42,33 +43,38 @@ def main():
     #### SUBMIT BUTTON
     if st.button("Estimate the Price"):
         # result= model.predict(df)
-        st.success(f'The output is 1000')
+        # st.success(f'The output is 1000')
         try:
             house = House(selected_address)
-            dtm = "/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DTM/155000-240000.tif"
-            dsm = "/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DSM/155000-240000.tif"
+            print(house.tif_names)
+            dtm = f"/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DTM/{house.tif_names}"
+            dsm = f"/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DSM/{house.tif_names}"
+            # dtm = "/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DTM/155000-240000.tif"
+            # dsm = "/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DSM/155000-240000.tif"
             substract_dtm_dsm(dtm, dsm)
-            shapes = [feature for feature in house.bounding_box_coordinates]
+            shapes = [feature for feature in house.bounding_box_coordinates]           
             mask_chm(shapes)
-            chm = "lidar_chm.tif"
+            chm = "masked_chm.tif"
             fig = plot_house(chm, house.house_coordinates)
 
             config={"displayModeBar": True}
             st.plotly_chart(fig, use_container_width=False, config=config)
         
         #Just because we don't have all the necessary tiffs
-        except:
-            input_adress = "Hemelrijk 49, 2910 Essen"
-            house = House(input_adress) #This is the only thing changing
-            dtm = "/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DTM/155000-240000.tif"
-            dsm = "/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DSM/155000-240000.tif"
-            substract_dtm_dsm(dtm, dsm)
-            shapes = [feature for feature in house.bounding_box_coordinates]
-            mask_chm(shapes)
-            chm = "lidar_chm.tif"
-            fig = plot_house(chm, house.house_coordinates)
-            config={"displayModeBar": False, "showTips": False}
-            st.plotly_chart(fig, use_container_width=True, config=config)
+        except Exception as r:
+
+            print(r)
+            # input_adress = "Hemelrijk 49, 2910 Essen"
+            # house = House(input_adress) #This is the only thing changing
+            # dtm = "/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DTM/155000-240000.tif"
+            # dsm = "/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DSM/155000-240000.tif"
+            # substract_dtm_dsm(dtm, dsm)
+            # shapes = [feature for feature in house.bounding_box_coordinates]
+            # mask_chm(shapes)
+            # chm = "masked_chm.tif"
+            # fig = plot_house(chm, house.house_coordinates)
+            # config={"displayModeBar": False, "showTips": False}
+            # st.plotly_chart(fig, use_container_width=True, config=config)
 
 
         # st.plotly_chart(fig, use_container_width=True)
