@@ -35,29 +35,38 @@ def main():
     st.markdown(html_temp,unsafe_allow_html=True)
 
     ### LIST OF ADDRESSE ###
-    df_addresss = pd.read_csv("address.csv")
-    list_address = df_addresss["address"].to_list()
-    selected_address = st.selectbox('Please select an address:',list_address)
-    
+    df = pd.read_csv("dataset/essen_address.csv")   
 
+    postal_code = 2910
+    city_name = "Essen"
+    st.markdown('__Locality__')
+    st.info(f"{postal_code} - {city_name.upper()}")
+    street_choice = df["streetname_nl"].sort_values().unique()
+    selected_street = st.selectbox('Please select an address:',street_choice)
+
+    nb_choice = df[df["streetname_nl"] == "Albert Yssackersstraat"].sort_values(by=["house_number"])
+    nb_choice = df[df["streetname_nl"] == selected_street].sort_values(by=["house_number"])
+    nb_choice = nb_choice["house_number"].astype(int, errors="ignore").sort_values().to_list()
+    selected_number = st.selectbox('Please select a number:',nb_choice)
+
+    selected_address = f"{selected_street} {selected_number}, 2910 Essen"
     #### SUBMIT BUTTON
     if st.button("Look at it!"):
         # result= model.predict(df)
         # st.success(f'The output is 1000')
         try:
             house = House(selected_address)
-            print(house.tif_names)
-            dtm = f"/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DTM/{house.tif_names}"
-            dsm = f"/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DSM/{house.tif_names}"
+            dtm = f"dataset/DTM/{house.tif_names}"
+            dsm = f"dataset/DSM/{house.tif_names}"
             substract_dtm_dsm(dtm, dsm)
-            shapes = [feature for feature in house.bounding_box_coordinates]           
+            shapes = [feature for feature in house.bounding_box_coordinates]     
             mask_chm(shapes)
-            chm = "masked_chm.tif"
+            chm = "dataset/masked_chm.tif"
             fig = plot_house(chm, house.house_coordinates)
 
             config={"displayModeBar": False}
             st.plotly_chart(fig, use_container_width=False, config=config)
-        
+            print("Everything's ok")
         except Exception as r:
             print(f"There was the following error:{r}")
 

@@ -16,30 +16,28 @@ def substract_dtm_dsm(dtm, dsm):
 
     lidar_chm = lidar_dsm_im - lidar_dem_im
     # export chm as a new geotiff to use or share with colleagues
-    with rasterio.open("chm.tif", 'w', **dsm_meta) as ff:
+    with rasterio.open("dataset/chm.tif", 'w', **dsm_meta) as ff:
         ff.write(lidar_chm,1)
 
 def merge_tif(list_tif):
     liste_dtm = []
     for tif in list_tif:
-        locals()[tif] = rasterio.open(f"/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DTM/{tif}")
+        locals()[tif] = rasterio.open(f"dataset/DTM/{tif}")
         liste_dtm.append(locals()[tif])
 
-    rasterio.merge.merge(liste_dtm, dst_path= "/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DTM/merged.tif")
+    rasterio.merge.merge(liste_dtm, dst_path= "dataset/DTM/merged.tif")
 
     liste_dsm = []
     for tif in list_tif:
-        locals()[tif] = rasterio.open(f"/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DSM/{tif}")
+        locals()[tif] = rasterio.open(f"dataset/DSM/{tif}")
         liste_dsm.append(locals()[tif])
-    rasterio.merge.merge(liste_dsm, dst_path= "/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DSM/merged.tif")
+    rasterio.merge.merge(liste_dsm, dst_path= "dataset/DSM/merged.tif")
     
     return "merged.tif"
 
 def mask_chm(bounding_box):
     shapes = [feature for feature in bounding_box]
-    print(shapes)
-    with rasterio.open("chm.tif") as src:
-        print(src.bounds)
+    with rasterio.open("dataset/chm.tif") as src:
         out_image, out_transform = rasterio.mask.mask(src, shapes, crop=True)
         out_meta = src.meta
         out_meta.update({"driver": "GTiff",
@@ -47,5 +45,5 @@ def mask_chm(bounding_box):
                     "width": out_image.shape[2],
                     "transform": out_transform})
 
-    with rasterio.open("masked_chm.tif", "w", **out_meta) as dest:
+    with rasterio.open("dataset/masked_chm.tif", "w", **out_meta) as dest:
         dest.write(out_image)
