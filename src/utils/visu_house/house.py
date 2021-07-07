@@ -33,7 +33,7 @@ class House():
                     pass
                 else:
                     self.tif_names.append(str(int((x)//1000*1000)) + "-" + str(int((y+1000)//1000*1000)) + ".tif")
-    
+        
         if len(self.tif_names) > 1:
             merge_name = merge_tif(self.tif_names)
             self.tif_names = merge_name

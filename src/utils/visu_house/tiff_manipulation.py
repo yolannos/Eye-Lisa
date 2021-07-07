@@ -3,34 +3,52 @@ import rasterio
 import rasterio.mask
 import rasterio.merge
 
+# def substract_dtm_dsm(dtm, dsm):
+#     '''
+#     Take a dsm and a dtm, do a substraction and create a chm
+#     '''
+#     # with rasterio.open(dtm) as src:
+#     #     lidar_dem_im = src.read(1, masked=True)
+#     #     sjer_ext = rasterio.plot.plotting_extent(src)
+
+#     # with rasterio.open(dsm) as src:
+#     #     lidar_dsm_im = src.read(1, masked=True)
+#     #     dsm_meta = src.profile
+
+#     # lidar_dem_xr = rxr.open_rasterio(dtm, masked=True).squeeze()
+#     # lidar_dsm_xr = rxr.open_rasterio(dsm, masked=True).squeeze()
+#     # lidar_chm_xr = lidar_dsm_xr - lidar_dem_xr
+#     # lidar_chm_xr.rio.to_raster("chm.tif")
+
 def substract_dtm_dsm(dtm, dsm):
-    '''
-    Take a dsm and a dtm, do a substraction and create a chm
-    '''
-    # with rasterio.open(dtm) as src:
-    #     lidar_dem_im = src.read(1, masked=True)
-    #     sjer_ext = rasterio.plot.plotting_extent(src)
+    # open the digital terrain model     
+    with rasterio.open(dtm) as src:
+        lidar_dem_im = src.read(1, masked=True)
+        # sjer_ext = rasterio.plot.plotting_extent(src)
 
-    # with rasterio.open(dsm) as src:
-    #     lidar_dsm_im = src.read(1, masked=True)
-    #     dsm_meta = src.profile
+    # open the surface terrain model 
+    with rasterio.open(dsm) as src:
+        lidar_dsm_im = src.read(1, masked=True)
+        dsm_meta = src.profile
 
-    lidar_dem_xr = rxr.open_rasterio(dtm, masked=True).squeeze()
-    lidar_dsm_xr = rxr.open_rasterio(dsm, masked=True).squeeze()
-    lidar_chm_xr = lidar_dsm_xr - lidar_dem_xr
-    lidar_chm_xr.rio.to_raster("chm.tif")
+    lidar_chm = lidar_dsm_im - lidar_dem_im
+    # export chm as a new geotiff to use or share with colleagues
+    with rasterio.open("chm.tif", 'w', **dsm_meta) as ff:
+        ff.write(lidar_chm,1)
 
 def merge_tif(list_tif):
-    liste = []
+    liste_dtm = []
     for tif in list_tif:
         locals()[tif] = rasterio.open(f"/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DTM/{tif}")
-        liste.append(locals()[tif])
-        rasterio.merge.merge(liste, dst_path= "/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DTM/merged.tif")
+        liste_dtm.append(locals()[tif])
 
+    rasterio.merge.merge(liste_dtm, dst_path= "/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DTM/merged.tif")
+
+    liste_dsm = []
     for tif in list_tif:
         locals()[tif] = rasterio.open(f"/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DSM/{tif}")
-        liste.append(locals()[tif])
-        rasterio.merge.merge(liste, dst_path= "/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DSM/merged.tif")
+        liste_dsm.append(locals()[tif])
+    rasterio.merge.merge(liste_dsm, dst_path= "/home/yolann/Documents/becode/projects/Eye-Lisa/src/dataset/DSM/merged.tif")
     
     return "merged.tif"
 
