@@ -2,7 +2,7 @@ import numpy as np
 from pyproj import Transformer, CRS
 from mapbox import Geocoder
 from utils.visu_house.tiff_manipulation import merge_tif
-# from tiff_manipulation import merge_tif
+# from tiff_manipulation import merge_tif #TEST PURPOSE
 
 class House():
 
@@ -34,6 +34,7 @@ class House():
                 else:
                     self.tif_names.append(str(int((x)//1000*1000)) + "-" + str(int((y+1000)//1000*1000)) + ".tif")
         
+        #In the case in which the surface area of the house is in multiple geotiff, we merge them
         if len(self.tif_names) > 1:
             merge_name = merge_tif(self.tif_names)
             self.tif_names = merge_name
@@ -70,5 +71,4 @@ class House():
         self.house_coordinates = (transformer.transform(house_coordinates[1], house_coordinates[0]))
 
         dic["coordinates"] = [coord]
-
         self.bounding_box_coordinates = [dic]
