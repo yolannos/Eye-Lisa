@@ -14,10 +14,26 @@ It was solved in 2 weeks.
 > Disclaimer: The current app only works for Essen in Flanders due to lack of space. 
 
 
-### Sneak Peek
-![Alt text](assets/sneak_pic.png "a title")
+### __Sneak Peek__
+<img src="assets/sneak_peek.gif" alt="drawing" width="400"/>
 
-## Process:
+# Process:
+## Preprocessing the GEOTifs:
+First, we had to reduce the size of the geotif (+-1GB) to be able to use it without loss of performances. In order to do so, we divided all the tif in smaller tif of a size of 100 hectares (+-4MB).
+To recover the right tif, we named them by their coordinates; that is, the Top coordinate (greatest y) et the left coordinate (smallest x).
+
+<img src="./assets/naming.png" alt="drawing" width="200"/>
+
+Then for a specific address, we have Lambert72 coordinates and we do a euclidian division to get the root of the top and the left coordinates. We'll talk about it later.
+
+## Fetching the address:
+ <img src="./assets/define_area.png" alt="drawing" width="600"/>
+
+ ## Fetching the tif:
+ <img src="./assets/fetch_tif.png" alt="drawing" width="600"/>
+
+ ## Plotting it:
+Use of Plotly and add the trace of the building.
 
 ## Future improvements
 
