@@ -108,14 +108,14 @@ def side_bar(address):
         if st.button("About"):
             st.text("Thanks for watching the presentation")
     ###################################################################FIN SIDEBAR
+        return
 
-
-def side_bar_void():
+def side_bar_void(postal_code):
     with st.sidebar:
-        st.header("We don't have this house in our DB. If it is yours, enter your the informations needed to have an estimated price.")
+        st.header("Please enter the informations needed to have an estimated price")
         st.subheader('General informations:')
         type_of_property = st.selectbox('Select', ["house", "apartment"])
-        locality = st.number_input("Enter your locality", min_value= 1000, max_value = 9999)
+        locality = postal_code
         number_of_room = st.number_input("Enter the number of rooms", min_value= 0, max_value = 10)
         area = st.number_input("Enter the area of your house", min_value= 0, max_value = 1000)
         state_of_building = st.selectbox('What is the state of your house?', ["good", "medium", "to renovate", "new"])
@@ -156,3 +156,4 @@ def side_bar_void():
         #                     province,
         #                     region]], 
         #                     columns= columns)
+        return

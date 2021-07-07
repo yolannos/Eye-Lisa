@@ -28,32 +28,40 @@ from visu_house.tiff_manipulation import substract_dtm_dsm, mask_chm
 
 def main():
 
-    st.title("Eye Lisa - Demo")
-    html_temp = """
-    <h2 style="color:black;text-align:left;"> Take a look at your house!</h2>
+    st.set_page_config(layout="wide",page_title='Eye Lisa', page_icon=":house:")
+
+
+    col1, col2 = st.beta_columns(2)
+    # col2.subheader("A webapp by Yolann Sabaux")
+    html_title = html_subtitle = """
+    <h1 style="color:rgb(32,32,32);text-align:left;"> Eye Lisa - Demo @ <a href="https://en.wikipedia.org/wiki/Essen">Essen</a></h1>
     """
-    st.markdown(html_temp,unsafe_allow_html=True)
+    col1.markdown(html_title,unsafe_allow_html=True)
+    
+    html_subtitle = """
+    <h2 style="color:rgb(32,32,32);text-align:left;"> Take a look at your house!</h2>
+    """
+    col1.markdown(html_subtitle,unsafe_allow_html=True)
 
     ### LIST OF ADDRESSE ###
     df = pd.read_csv("dataset/essen_address.csv")   
 
     postal_code = 2910
     city_name = "Essen"
-    st.markdown('__Locality__')
-    st.info(f"{postal_code} - {city_name.upper()}")
+    col1.markdown('__Locality__')
+    col1.info(f"{postal_code} - {city_name.upper()}")
     street_choice = df["streetname_nl"].sort_values().unique()
-    selected_street = st.selectbox('Please select an address:',street_choice)
+    selected_street = col1.selectbox('Please select an address:',street_choice)
 
     nb_choice = df[df["streetname_nl"] == "Albert Yssackersstraat"].sort_values(by=["house_number"])
     nb_choice = df[df["streetname_nl"] == selected_street].sort_values(by=["house_number"])
     nb_choice = nb_choice["house_number"].astype(int, errors="ignore").sort_values().to_list()
-    selected_number = st.selectbox('Please select a number:',nb_choice)
+    selected_number = col1.selectbox('Please select a number:',nb_choice)
 
     selected_address = f"{selected_street} {selected_number}, 2910 Essen"
     #### SUBMIT BUTTON
-    if st.button("Look at it!"):
-        # result= model.predict(df)
-        # st.success(f'The output is 1000')
+    if col1.button("Look at it!"):
+        
         try:
             house = House(selected_address)
             dtm = f"dataset/DTM/{house.tif_names}"
@@ -65,19 +73,39 @@ def main():
             fig = plot_house(chm, house.house_coordinates)
 
             config={"displayModeBar": False}
-            st.plotly_chart(fig, use_container_width=False, config=config)
+            col2.plotly_chart(fig, use_container_width=True, config=config)
             print("Everything's ok")
+
+
+            ##### SIDEBAR #########
+            try:
+                model = side_bar(selected_address)
+            except:
+                model = side_bar_void(postal_code)
+
+            html_line = '''
+            <style type="text/css">
+            hr {width: 85%;height: 20px;background-color: rgb(32,32,32);margin-right: auto;margin-left: auto;margin-top: 5px;margin-bottom: 5px;
+            border-width: 2px;border-color: rgb(32,32,32);}
+            </style>
+            <hr>
+            '''
+            col1.markdown(html_line,unsafe_allow_html=True)
+
+            html_subtitle_price = """
+            <h2 style="color:rgb(32,32,32);text-align:left;"> Get an estimated price!</h2>
+            """
+            col1.markdown(html_subtitle_price,unsafe_allow_html=True)
+            with col1.beta_expander(label='Expand me!'):
+                "Test"
+        
         except Exception as r:
+            col1.header("It looks like there was an error. Please retry or contact the administrator of the website.")
             print(f"There was the following error:{r}")
 
-    # st.success(f'The output is {np.expm1(result[0])}')
+    # col1.success(f'The output is {np.expm1(result[0])}')
     
 
-        ##### SIDEBAR #########
-        try:
-            side_bar(selected_address)
-        except:
-            side_bar_void()
 
 if __name__=='__main__':
     main()
