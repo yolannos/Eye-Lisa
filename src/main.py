@@ -41,7 +41,7 @@ def main():
     
 
     #### SUBMIT BUTTON
-    if st.button("Estimate the Price"):
+    if st.button("Look at it!"):
         # result= model.predict(df)
         # st.success(f'The output is 1000')
         try:
