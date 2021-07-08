@@ -22,7 +22,7 @@ It was solved in 2 weeks.
 First, we had to reduce the size of the geotif (+-1GB) to be able to use it without loss of performances. In order to do so, we divided all the tif in smaller tif of a size of 100 hectares (+-4MB).
 To recover the right tif, we named them by their coordinates; that is, the Top coordinate (greatest y) et the left coordinate (smallest x).
 
-<img src="./assets/naming.png" alt="drawing" width="600"/>
+<img src="./assets/naming.png" alt="drawing" width="200"/>
 
 Then for a specific address, we have Lambert72 coordinates and we do a euclidian division to get the root of the top and the left coordinates. We'll talk about it later.
 

@@ -20,7 +20,6 @@ def main():
 
     st.set_page_config(layout="wide",page_title='Eye Lisa', page_icon=":house:")
 
-
     col1, col2 = st.beta_columns(2)
     # col2.subheader("A webapp by Yolann Sabaux")
     html_title = html_subtitle = """
@@ -67,8 +66,7 @@ def main():
             col2.plotly_chart(fig, use_container_width=True, config=config)
             print("Everything's ok")
 
-
-            ##### SIDEBAR #########
+            # SIDEBAR
             try:
                 model = side_bar(selected_address)
             except:
@@ -95,8 +93,8 @@ def main():
             print(f"There was the following error:{r}")
 
     # col1.success(f'The output is {np.expm1(result[0])}')
-    
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
+
     main()
