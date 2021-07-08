@@ -14,7 +14,7 @@ def plot_house(chm, house_coordinates):
     xMin, yMin, xMax, yMax = data.bounds
 
     z_data = pd.DataFrame(data.read(1))
-    z_data.index   = list(range(int(yMax), int(yMin), -1))
+    z_data.index = list(range(int(yMax), int(yMin), -1))
     z_data.columns = list(range(int(xMin), int(xMax)))
     z_data = z_data.applymap(lambda x: 0.5 if x < 1 else round(x, 1))
 
@@ -25,7 +25,7 @@ def plot_house(chm, house_coordinates):
     r, t = house_coordinates[0], house_coordinates[1]
 
     ## TO PLOT THE AREA SPECIFIC TO THE ADDRESS FROM THE 3D BUILDINGS FILE
-    with fiona.open("dataset/3d_objects/Shapefile/GRBGebL1D2.shp", "r") as shapefile:
+    with fiona.open("dataset/3d_objects/Shapefile/GRBGebL1D211016.shp", "r") as shapefile:
         
         for feature in shapefile.filter(bbox=(l, b, r, t)):
             
@@ -47,6 +47,7 @@ def plot_house(chm, house_coordinates):
             width=900,
             height=1000,
             margin=dict(t=40, r=0, l=0, b=40),
+            hovermode=False,
             scene = {"xaxis": {'showspikes': False},
                     "yaxis": {'showspikes': False},
                     "zaxis": {'showspikes': False},

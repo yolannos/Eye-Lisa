@@ -16,16 +16,6 @@ from visu_house.house import House
 from visu_house.tiff_manipulation import substract_dtm_dsm, mask_chm
 
 
-### A INTEGRER
-# cwd = os.getcwd()  # Get the current working directory (cwd)
-# model = pickle.load(open(cwd+"/bg_reg.pkl", "rb"))
-
-# ###### Just to get exactly the same columns as the one used in the model
-# data = pd.read_csv("https://raw.githubusercontent.com/SamuelD005/challenge-regression/development/Data8.csv", sep=",")
-# X = data.drop(["Price","Unnamed: 0","PriceperMeter"] , axis = 1)
-# columns = X.columns
-# #######
-
 def main():
 
     st.set_page_config(layout="wide",page_title='Eye Lisa', page_icon=":house:")
@@ -34,7 +24,7 @@ def main():
     col1, col2 = st.beta_columns(2)
     # col2.subheader("A webapp by Yolann Sabaux")
     html_title = html_subtitle = """
-    <h1 style="color:rgb(32,32,32);text-align:left;"> Eye Lisa - Demo @ <a href="https://en.wikipedia.org/wiki/Essen">Essen</a></h1>
+    <h1 style="color:rgb(32,32,32);text-align:left;"> Eye Lisa - Demo @<a href="https://en.wikipedia.org/wiki/Essen">Essen</a></h1>
     """
     col1.markdown(html_title,unsafe_allow_html=True)
     
@@ -43,7 +33,7 @@ def main():
     """
     col1.markdown(html_subtitle,unsafe_allow_html=True)
 
-    ### LIST OF ADDRESSE ###
+    # LIST OF ADDRESS
     df = pd.read_csv("dataset/essen_address.csv")   
 
     postal_code = 2910
@@ -51,7 +41,7 @@ def main():
     col1.markdown('__Locality__')
     col1.info(f"{postal_code} - {city_name.upper()}")
     street_choice = df["streetname_nl"].sort_values().unique()
-    selected_street = col1.selectbox('Please select an address:',street_choice)
+    selected_street = col1.selectbox('Please select an address:', street_choice)
 
     nb_choice = df[df["streetname_nl"] == "Albert Yssackersstraat"].sort_values(by=["house_number"])
     nb_choice = df[df["streetname_nl"] == selected_street].sort_values(by=["house_number"])
@@ -59,7 +49,7 @@ def main():
     selected_number = col1.selectbox('Please select a number:',nb_choice)
 
     selected_address = f"{selected_street} {selected_number}, 2910 Essen"
-    #### SUBMIT BUTTON
+    # SUBMIT BUTTON
     if col1.button("Look at it!"):
         
         try:
@@ -72,7 +62,8 @@ def main():
             chm = "dataset/masked_chm.tif"
             fig = plot_house(chm, house.house_coordinates)
 
-            config={"displayModeBar": False}
+            config={"displayModeBar": False,
+                    'displaylogo': False,}
             col2.plotly_chart(fig, use_container_width=True, config=config)
             print("Everything's ok")
 
