@@ -15,7 +15,7 @@ It was solved in 2 weeks.
 
 
 ### __Sneak Peek__
-<img src="assets/sneak_peek.png" alt="drawing" width="400"/>
+<img src="assets/sneak_peek.png" alt="drawing" width="600"/>
 
 # Process:
 ## Preprocessing the GEOTifs:
