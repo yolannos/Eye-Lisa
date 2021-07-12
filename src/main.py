@@ -10,7 +10,7 @@ path = pathlib.Path(__file__).parent.resolve()
 import sys
 # adding utils to the system path
 sys.path.insert(0, f'{path}/utils')
-from front_utils import side_bar, side_bar_void
+from front_utils import side_bar_void
 from visu_house.plot_house import plot_house
 from visu_house.house import House
 from visu_house.tiff_manipulation import substract_dtm_dsm, mask_chm
@@ -32,6 +32,7 @@ def main():
     """
     col1.markdown(html_subtitle,unsafe_allow_html=True)
 
+
     # LIST OF ADDRESS
     df = pd.read_csv("dataset/essen_address.csv")   
 
@@ -49,6 +50,8 @@ def main():
 
     selected_address = f"{selected_street} {selected_number}, 2910 Essen"
     # SUBMIT BUTTON
+    # SIDEBAR
+    df = side_bar_void(postal_code)
     if col1.button("Look at it!"):
         
         try:
@@ -66,12 +69,6 @@ def main():
             col2.plotly_chart(fig, use_container_width=True, config=config)
             print("Everything's ok")
 
-            # SIDEBAR
-            try:
-                model = side_bar(selected_address)
-            except:
-                model = side_bar_void(postal_code)
-
             html_line = '''
             <style type="text/css">
             hr {width: 85%;height: 20px;background-color: rgb(32,32,32);margin-right: auto;margin-left: auto;margin-top: 5px;margin-bottom: 5px;
@@ -86,8 +83,11 @@ def main():
             """
             col1.markdown(html_subtitle_price,unsafe_allow_html=True)
             with col1.beta_expander(label='Expand me!'):
-                "Test"
-        
+                cwd = os.getcwd()  # Get the current working directory (cwd)
+                model = pickle.load(open(cwd+"/utils/bg_reg.pkl", "rb"))
+                result = model.predict(df)
+                result = round((np.expm1(result[0])//10000*10000))
+                f"The price estimated is {result} euros."
         except Exception as r:
             col1.header("It looks like there was an error. Please retry or contact the administrator of the website.")
             print(f"There was the following error:{r}")

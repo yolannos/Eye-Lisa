@@ -42,7 +42,7 @@ def plot_house(chm, house_coordinates):
             #df = pd.concat([df_up, df_down],axis = 0)
             
             fig.add_scatter3d(x=df_up['x'], y=df_up['y'], z=df_up["z"], surfaceaxis= -1, mode='lines',showlegend=False, line=dict( width=5))
-
+            break
     fig.update_layout(
             width=900,
             height=1000,
