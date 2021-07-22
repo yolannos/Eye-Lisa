@@ -1,5 +1,11 @@
-# Eye-Lisa - house visualisation and price estimation app
 [![Python version](https://img.shields.io/badge/Python-3.8-blue.svg)](https://www.python.org/downloads/release/python-380/)
+
+<!-- PROJECT LOGO -->
+  <h1 align="center">Eye-Lisa</h1>
+  <h3 align="center">
+    House visualisation and Price estimation app
+ </h3>
+    <br/>
 
 Eye-Lisa is an app allowing to visualise any property in its environment. Furthermore, it offers to possibility to estimate the price of it:
 - If we have it in our dataset it will automatically give an estimated price
