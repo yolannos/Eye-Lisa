@@ -66,7 +66,7 @@ def main():
 
             config={"displayModeBar": False,
                     'displaylogo': False,}
-            col2.plotly_chart(fig, use_container_width=True, config=config)
+            col1.plotly_chart(fig, use_container_width=False, config=config)
             print("Everything's ok")
 
             html_line = '''
